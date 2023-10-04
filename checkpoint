@@ -1,2 +1,2 @@
-model_checkpoint_path: "checkpoints # File path for saving model checkpoints"
-all_model_checkpoint_paths: "checkpoints # File path for saving model checkpoints"
+model_checkpoint_path: "checkpoints"
+all_model_checkpoint_paths: "checkpoints"
