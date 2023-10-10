@@ -1,16 +1,16 @@
 # Experiment metadata
 
 ## Experiment number
-exp_num = 'template_test1'
+exp_num = 'template_test4'
 
 ## Parent Experiment
-parent_exp = 'NA'
+parent_exp = 'template_test2'
 
 ## Dataset ID
 dataset_id = 'original_development_data'
 
 ## Notes about the experiment. Especially changes from parent experiment
-notes = 'This is the first test to see if the template works'
+notes = 'Changed ModelCheckpoint to save_best_only = False'
 
 ## Model ID
 model_id = 'dummy'
@@ -22,8 +22,9 @@ sprint_id = '1'
 import pandas as pd
 import tensorflow as tf
 import tensorflow_hub as hub
-from tensorflow.keras.callbacks import ModelCheckpoint
-from tensorflow.keras.callbacks import EarlyStopping
+from tensorflow import keras
+# from tensorflow.keras.callbacks import ModelCheckpoint
+# from tensorflow.keras.callbacks import EarlyStopping
 from functools import partial
 import numpy as np
 import pickle
@@ -94,14 +95,14 @@ log_dir = "logs/fit/" + datetime.datetime.now().strftime("%Y%m%d-%H%M%S")
 tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=log_dir, histogram_freq=1)
 
 CHECKPOINT_DIR = r"P:\Eli\Mining_for_the_Future\porphyry-copper-deposit-prediction\checkpoints" # File path for saving model checkpoints
-callbacks = [
-    ModelCheckpoint(CHECKPOINT_DIR, monitor='val_accuracy', save_weights_only = True, save_best_only= True, mode = 'max'),
+callbacks_list = [
+    tf.keras.callbacks.ModelCheckpoint(filepath = CHECKPOINT_DIR, monitor='val_loss', save_weights_only = True, save_best_only= False, mode = 'min'),
     tensorboard_callback
 ]
 
 # Train the model
 epochs = 2
-model_fit = model.fit(train_ds, validation_data = val_ds, epochs = epochs, callbacks = callbacks)
+model_fit = model.fit(train_ds, validation_data = val_ds, epochs = epochs, callbacks = callbacks_list)
 
 # Run evaluation on the test data
 metrics = model.evaluate(test_ds, return_dict = True)
@@ -109,7 +110,10 @@ metrics = model.evaluate(test_ds, return_dict = True)
 accuracy = metrics['accuracy']
 precision = metrics['precision']
 recall = metrics['recall']
-f1 = 2 * (precision * recall)/(precision + recall)
+try:
+    f1 = 2 * (precision * recall)/(precision + recall)
+except:
+    f1 = 999
 
 # Record results in csv
 exp_results = pd.DataFrame({

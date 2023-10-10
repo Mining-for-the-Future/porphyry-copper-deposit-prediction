@@ -1,2 +1,5 @@
 Exp_num,Parent,Notes,Sprint_ID,Dataset,Model,Accuracy,Recall,Precision,F1
-template_test1,NA,This is the first test to see if the template works,1,original_development_data,dummy,0.003249390749260783,0.010638297535479069,0.4444444477558136,0.020779220140247728
+template_test1,,This is the first test to see if the template works,1,original_development_data,dummy,0.0032493907492607,0.010638297535479,0.4444444477558136,0.0207792201402477
+template_test2,template_test1,This is the second test to see if ModelCheckpoint works,1,original_development_data,dummy,0.0,0.3910761177539825,0.591269850730896,0.4707740962696788
+template_test3,template_test2,Changed what ModelCheckpoint monitoring to val_loss to see if checkpoint will be saved,1,original_development_data,dummy,0.0008123476873151,0.0080213900655508,1.0,0.0159151187556231
+template_test4,template_test2,Changed ModelCheckpoint to save_best_only = False,1,original_development_data,dummy,0.0,0.0,0.0,999.0
